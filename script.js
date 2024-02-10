@@ -1,102 +1,37 @@
-const writename = "Varavpreet Kaur";
-const heading = document.createElement("h1");
+const imageslider = [
+    "img1.avif",
+    "img2.avif",
+    "img3.avif"    
+];
 
-heading.textContent = writename;
-heading.style.textAlign = "center";
-heading.style.color = "rgb(224, 10, 168)";
+let imgslider = document.getElementById("img");
+let prev = document.getElementById("prev");
+let next = document.getElementById("next");
+let currentPic = 0;
 
-document.body.appendChild(heading);
-const body = document.body;
-
-const input1 = createInputElement("number", "input1");
-const input2 = createInputElement("number", "input2");
-const button = createButtonElement("Sum");
-
-button.addEventListener("click", calculateSum);
-body.appendChild(input1);
-body.appendChild(input2);
-body.appendChild(button);
-
-const displaySum = createParagraphElement("");
-body.appendChild(displaySum);
-
-function calculateSum() 
+function showimage(i) 
 {
-    const number1 = parseFloat(input1.value) || 0;
-    const number2 = parseFloat(input2.value) || 0;
-    const total = number1 + number2;
-    displaySum.textContent = `Sum: ${total}`;
-}
-
-const validateInput = () => 
-{
-    try 
+    if (i < 0) 
     {
-        validateNumber(input1.value);
-        validateNumber(input2.value);
+        currentPic = imageslider.length - 1;//to jump the 1st image to last one
     } 
-    catch (error) 
+    else if (i >= imageslider.length) 
     {
-        showError(error);
+        currentPic = 0;
     }
-};
-
-const validateNumber = (value) => 
-{
-    const parsedValue = parseFloat(value);
-    if (isNaN(parsedValue)) 
-    {
-        throw "Put the the number!";
-    }
-    return parsedValue;
-};
-
-const showError = (errorMessage) => 
-{
-    const errorMsg = createParagraphElement(errorMessage);
-    errorMsg.style.color = "red";
-    body.appendChild(errorMsg);
-
-    input1.style.border = "5 px solid red";
-    input2.style.border = "6 px solid red";
-};
-button.addEventListener("click", validateInput);
-
-function createInputElement(type, id) 
-{
-    const inputElement = document.createElement("input");
-    inputElement.type = type;
-    inputElement.id = id;
-    return inputElement;
+    imgslider.src = imageslider[currentPic];//to jump the 1st image to last one
 }
 
-function createButtonElement(textContent)
+prev.addEventListener("click", () =>
 {
-    const buttonElement = document.createElement("button");
-    buttonElement.textContent = textContent;
-    return buttonElement;
-}
+    currentPic--;//working of previous button
+    showimage(currentPic);
+});
 
-function createParagraphElement(textContent)
+next.addEventListener("click", () => 
 {
-    const paragraphElement = document.createElement("p");
-    paragraphElement.textContent = textContent;
-    return paragraphElement;
-}
-function appendElementToBody(element) 
-{
-    body.appendChild(element);
-}
+    currentPic++;//working of next button
+    showimage(currentPic);
+});
 
-function appendElementsToBody(elements) 
-{
-    elements.forEach((element) => appendElementToBody(element));
-}
-
-function applyErrorStyle(elements) 
-{
-    elements.forEach((element) => 
-    {
-        element.style.border = "5px solid red";
-    });
-}
+showimage(currentPic);
